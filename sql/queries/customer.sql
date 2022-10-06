@@ -9,10 +9,10 @@ WHERE id = $1
 LIMIT 1;
 -- name: UpdateCustomer :one
 UPDATE customers
-set first_name = $2,
-  last_name = $3,
-  email = $4,
-  phone = $5
+SET first_name = COALESCE(sqlc.narg(first_name), first_name),
+  last_name = COALESCE(sqlc.narg(last_name), last_name),
+  email = COALESCE(sqlc.narg(email), email),
+  phone = COALESCE(sqlc.narg(phone), phone)
 WHERE id = $1
 RETURNING *;
 -- name: DeleteCustomer :exec

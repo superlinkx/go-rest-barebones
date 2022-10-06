@@ -8,8 +8,8 @@ import (
 	"github.com/superlinkx/go-rest-barebones/app"
 	"github.com/superlinkx/go-rest-barebones/config"
 	"github.com/superlinkx/go-rest-barebones/database"
-	"github.com/superlinkx/go-rest-barebones/entity"
 	"github.com/superlinkx/go-rest-barebones/router"
+	"github.com/superlinkx/go-rest-barebones/sqlc"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -29,7 +29,7 @@ func main() {
 	} else {
 		defer db.Close()
 		ctx := context.Background()
-		queries := entity.New(db)
+		queries := sqlc.New(db)
 		app := app.NewApp(db, queries, &appConfig, ctx)
 		log.Fatal(http.ListenAndServe(appConfig.GetAppHostString(), router.NewRouter(app)))
 	}

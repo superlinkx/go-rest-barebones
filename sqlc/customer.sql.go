@@ -3,10 +3,11 @@
 //   sqlc v1.15.0
 // source: customer.sql
 
-package entity
+package sqlc
 
 import (
 	"context"
+	"database/sql"
 )
 
 const createCustomer = `-- name: CreateCustomer :one
@@ -72,20 +73,20 @@ func (q *Queries) GetCustomer(ctx context.Context, id int32) (Customer, error) {
 
 const updateCustomer = `-- name: UpdateCustomer :one
 UPDATE customers
-set first_name = $2,
-  last_name = $3,
-  email = $4,
-  phone = $5
+SET first_name = COALESCE($2, first_name),
+  last_name = COALESCE($3, last_name),
+  email = COALESCE($4, email),
+  phone = COALESCE($5, phone)
 WHERE id = $1
 RETURNING id, first_name, last_name, email, phone
 `
 
 type UpdateCustomerParams struct {
 	ID        int32
-	FirstName string
-	LastName  string
-	Email     string
-	Phone     string
+	FirstName sql.NullString
+	LastName  sql.NullString
+	Email     sql.NullString
+	Phone     sql.NullString
 }
 
 func (q *Queries) UpdateCustomer(ctx context.Context, arg UpdateCustomerParams) (Customer, error) {

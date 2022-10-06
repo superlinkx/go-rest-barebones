@@ -17,7 +17,7 @@ PUT http://localhost:8080/customer/1
 Content-Type: application/json
 
 {
-  "first_name": "June"
+  "first_name": "John"
 }
 
 ###

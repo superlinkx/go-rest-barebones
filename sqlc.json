@@ -7,8 +7,8 @@
       "schema": "sql/schema/schema.sql",
       "gen": {
         "go": {
-          "package": "entity",
-          "out": "entity"
+          "package": "sqlc",
+          "out": "sqlc"
         }
       }
     }
