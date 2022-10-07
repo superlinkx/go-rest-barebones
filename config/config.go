@@ -6,25 +6,27 @@ import (
 )
 
 type Config struct {
-	AppHostName  string
-	AppPort      string
-	PsqlHost     string
-	PsqlPort     string
-	PsqlUser     string
-	PsqlPassword string
-	PsqlDb       string
-	PsqlSslMode  string
+	AppHostName          string
+	AppPort              string
+	MaxReconnectAttempts string
+	PsqlHost             string
+	PsqlPort             string
+	PsqlUser             string
+	PsqlPassword         string
+	PsqlDb               string
+	PsqlSslMode          string
 }
 
 func NewConfig() Config {
 	config := Config{
-		AppHostName:  "localhost",
-		AppPort:      "8080",
-		PsqlHost:     "localhost",
-		PsqlPort:     "5432",
-		PsqlUser:     "postgres",
-		PsqlPassword: "postgres",
-		PsqlDb:       "postgres",
+		AppHostName:          "localhost",
+		AppPort:              "8080",
+		MaxReconnectAttempts: "10",
+		PsqlHost:             "localhost",
+		PsqlPort:             "5432",
+		PsqlUser:             "postgres",
+		PsqlPassword:         "postgres",
+		PsqlDb:               "postgres",
 	}
 
 	if appHostName := os.Getenv("APP_HOSTNAME"); appHostName != "" {
@@ -33,6 +35,10 @@ func NewConfig() Config {
 
 	if appPort := os.Getenv("APP_PORT"); appPort != "" {
 		config.AppPort = appPort
+	}
+
+	if appMaxReconnectAttempts := os.Getenv("APP_MAX_RECONNECT_ATTEMPTS"); appMaxReconnectAttempts != "" {
+		config.MaxReconnectAttempts = appMaxReconnectAttempts
 	}
 
 	if psqlHost := os.Getenv("PSQL_HOST"); psqlHost != "" {
