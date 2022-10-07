@@ -12,7 +12,8 @@ COPY ./ ./
 # Build the executable
 RUN CGO_ENABLED=0 go build \
   -installsuffix 'static' \
-  -o /app
+  -o /app \
+  /src/cmd/go-rest-barebones/
 
 # STAGE 2: build the container to run
 FROM gcr.io/distroless/static AS final

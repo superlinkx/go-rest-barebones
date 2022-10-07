@@ -36,10 +36,9 @@ foo@bar:~$ go install github.com/rubenv/sql-migrate/...@latest
 The following commands will need to be run when working with a fresh database:
 
 ```bash session
-# Reads .env file because sql-migrate doesn't support .env out of the box :(
-foo@bar:~$ export $(< .env xargs)
+# Have to read .env file because sql-migrate doesn't support .env out of the box :(
 # Migrate
-foo@bar:~$ sql-migrate up
+foo@bar:~$ export $(< .env xargs); sql-migrate up
 # Seed
 foo@bar:~$ go run ./cmd/faker
 ```
@@ -61,7 +60,29 @@ generate command:
 
 ```bash session
 # Only to install sqlc when you don't have it already
-foo@bar~$ go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
+foo@bar:~$ go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
 # Generate any time you change the schema or queries files
-foo@bar~$ sqlc generate
+foo@bar:~$ sqlc generate
 ```
+
+## Running as a production-style test
+
+The point of this repo is to understand some of the dynamics at play when deploying as a "production-ready" app.
+To this end, the `docker-compose.yml` defines three services:  
+- database: Postgres database used for both production and development
+- go-rest-barebones: Runs our Go app inside a distroless container
+- web: runs an Nginx reverse proxy to our Go app. It's generally considered good practice to use some kind of reverse
+  proxy when running a Go web server. It's possible to go without, but you do need to understand the implications and write
+  more code and error handling to make sure it's up to spec.
+
+To test out the "production-ready" environment, simply run:
+```bash session
+foo@bar:~$ docker-compose up -d
+```
+
+By default, all ports are forwarded to localhost in the following way:
+- Postgres Port: 5432
+- Direct Go App Port: 8080
+- Web Port: 8888
+
+They should also be autoforwarded out of the dev container if using VS Code
