@@ -7,11 +7,15 @@ services:
       POSTGRES_DB: ${PSQL_DB:-app}
       POSTGRES_PASSWORD: ${PSQL_PASSWORD:-!ChangeMe!}
       POSTGRES_USER: ${PSQL_USER:-app}
+    ports:
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data:rw
 
   go-rest-barebones:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/go/Dockerfile
     ports:
       - "${APP_PORT}:${APP_PORT}"
     environment:
@@ -23,6 +27,17 @@ services:
       PSQL_USER: ${PSQL_USER:-app}
       PSQL_PASSWORD: ${PSQL_PASSWORD:-!ChangeMe!}
       PSQL_SSLMODE: ${PSQL_SSLMODE:-disable}
+
+  web:
+    image: nginx:1.23
+    volumes:
+      - ./docker/nginx/go-rest-barebones.template:/etc/nginx/conf.d/go-rest-barebones.template
+    ports:
+      - "${WEB_PORT}:80"
+    environment:
+      APP_PORT: ${APP_PORT}
+      SERVER_NAME: ${SERVER_NAME}
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/go-rest-barebones.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 
 volumes:
   db-data:

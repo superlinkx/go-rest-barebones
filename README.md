@@ -8,7 +8,9 @@ isn't part of my current research. It's a quick and dirty implementation designe
 
 ## Getting Started
 
-\<add a good devcontainer and document here\>
+I've created this repo with a VS Code Devcontainer definition. It's relatively easy to see the dependencies this way,
+and if you're using VS Code, you can simply run this project in a dev container with the VS Code Remote Dev Containers
+extension. This will create a reproducible environment with all dependencies already configured.
 
 ### Starting The App
 

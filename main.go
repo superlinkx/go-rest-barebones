@@ -29,13 +29,13 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Print("WARNING: No .env file found. Using environment variables.")
 	}
-
 	appConfig = config.NewConfig()
 
-	maxReconnectAttempts, err := strconv.Atoi(appConfig.MaxReconnectAttempts)
-	if err != nil {
+	if mra, err := strconv.Atoi(appConfig.MaxReconnectAttempts); err != nil {
 		log.Printf("WARNING: MaxReconnectAttempts not a valid number: %v", err)
 		maxReconnectAttempts = 10
+	} else {
+		maxReconnectAttempts = mra
 	}
 
 	for {
