@@ -20,7 +20,11 @@ To get the app's dependencies, run:
 foo@bar:~$ go mod download
 ```
 
-In order to get the default database up and running, use `docker-compose up database -d` (this works in the devcontainer thanks to
+In order to get the default database up and running, use:
+```bash session
+foo@bar:~$ docker-compose up database -d
+```
+(this works in the devcontainer thanks to
 docker-in-docker). This will run Postgres with the default parameters and forward port 5432.
 
 To handle migrations, you'll need to install `sql-migrate` if not using the dev container:
@@ -39,8 +43,6 @@ foo@bar:~$ sql-migrate up
 # Seed
 foo@bar:~$ go run ./cmd/faker
 ```
-
-<!--This will run the current migrations and seed the database with Faker data.-->
 
 Start the app:
 
