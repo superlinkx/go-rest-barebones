@@ -16,27 +16,50 @@ extension. This will create a reproducible environment with all dependencies alr
 
 To get the app's dependencies, run:
 
-```console
+```bash session
 foo@bar:~$ go mod download
 ```
 
 In order to get the default database up and running, use `docker-compose up database -d` (this works in the devcontainer thanks to
 docker-in-docker). This will run Postgres with the default parameters and forward port 5432.
 
+To handle migrations, you'll need to install `sql-migrate` if not using the dev container:
+
+```bash session
+foo@bar:~$ go install github.com/rubenv/sql-migrate/...@latest
+```
+
 The following commands will need to be run when working with a fresh database:
 
-```console
-foo@bar:~$ <add command for migrating db>
-foo@bar:~$ <add command for faking db data>
+```bash session
+# Reads .env file because sql-migrate doesn't support .env out of the box :(
+foo@bar:~$ export $(< .env xargs)
+# Migrate
+foo@bar:~$ sql-migrate up
+# Seed
+foo@bar:~$ go run ./cmd/faker
 ```
 
 <!--This will run the current migrations and seed the database with Faker data.-->
 
 Start the app:
 
-```
-foo@bar:~$ go run .
+```bash session
+foo@bar:~$ go run ./cmd/go-rest-barebones
 ```
 
 - Default server: localhost:8080
 - Can either run Postman against the endpoints or use the `example.http` with the VS Code "Rest Client" extension to try out some example endpoints.
+
+## Changing the queries/schema
+
+Schema and raw queries are in the `sql` directory split into separate subfolders. These are used to generate the actual
+models and strongly typed queries in the app through `sqlc`. To regenerate, you'll need to install sqlc and then run the
+generate command:
+
+```bash session
+# Only to install sqlc when you don't have it already
+foo@bar~$ go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
+# Generate any time you change the schema or queries files
+foo@bar~$ sqlc generate
+```

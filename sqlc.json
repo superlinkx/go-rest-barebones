@@ -3,8 +3,8 @@
   "sql": [
     {
       "engine": "postgresql",
-      "queries": "sql/queries/customer.sql",
-      "schema": "sql/schema/schema.sql",
+      "queries": "sql/queries/",
+      "schema": "sql/schema/",
       "gen": {
         "go": {
           "package": "sqlc",

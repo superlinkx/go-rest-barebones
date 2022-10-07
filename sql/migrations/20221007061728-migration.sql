@@ -1,3 +1,4 @@
+-- +migrate Up
 CREATE TABLE
     customers (
         id SERIAL PRIMARY KEY,
@@ -7,3 +8,5 @@ CREATE TABLE
         phone VARCHAR(255) NOT NULL,
         UNIQUE(email)
     );
+-- +migrate Down
+DROP TABLE customers;
