@@ -4,11 +4,25 @@ services:
   database:
     image: postgres:${POSTGRES_VERSION:-14}-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_DB: ${PSQL_DB:-app}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${PSQL_USER:-app}
     volumes:
       - db-data:/var/lib/postgresql/data:rw
+
+  go-rest-barebones:
+    build: .
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      APP_HOSTNAME: "0.0.0.0"
+      APP_PORT: "8080"
+      PSQL_HOST: database
+      PSQL_PORT: ${PSQL_PORT:-5432}
+      PSQL_DB: ${PSQL_DB:-app}
+      PSQL_USER: ${PSQL_USER:-app}
+      PSQL_PASSWORD: ${PSQL_PASSWORD:-!ChangeMe!}
+      PSQL_SSLMODE: ${PSQL_SSLMODE:-disable}
 
 volumes:
   db-data:

@@ -15,10 +15,10 @@ isn't part of my current research. It's a quick and dirty implementation designe
 To get the app's dependencies, run:
 
 ```console
-foo@bar:~$ go mod tidy
+foo@bar:~$ go mod download
 ```
 
-In order to get the default database up and running, use `docker-compose up -d` (this works in the devcontainer thanks to
+In order to get the default database up and running, use `docker-compose up database -d` (this works in the devcontainer thanks to
 docker-in-docker). This will run Postgres with the default parameters and forward port 5432.
 
 The following commands will need to be run when working with a fresh database:
