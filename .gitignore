@@ -1,3 +1,5 @@
 /__debug_bin
 /*.sql
 /go-rest-barebones
+/logs/*
+!.gitkeep
